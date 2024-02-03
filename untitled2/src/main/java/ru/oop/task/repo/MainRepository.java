@@ -29,9 +29,7 @@ public class MainRepository<T> implements BaseRepository<T> {
     public void delete(Integer id) {
 
     }
-public List<T> get(){
-        return ;
-}
+
     public int getId(T entity){
         return database.getId(entity);
     }

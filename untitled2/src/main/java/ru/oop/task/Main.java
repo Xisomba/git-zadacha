@@ -16,11 +16,12 @@ public class Main {
             System.out.print("Enter command: ");
             String command = scanner.nextLine();
             String[] words = command.split("\\s+");
-            consoleHandler.handleCommand(words);
-            if (ExitProcessor.exitRequested(words)){
+            if (ExitProcessor.isCommandExit(words)){
                 System.out.println("Exiting program...");
                 break;
             }
+            consoleHandler.handleCommand(words);
+
 
         }
     }

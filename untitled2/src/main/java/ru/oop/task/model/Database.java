@@ -9,21 +9,9 @@ public class Database<T> {
         this.map = new HashMap<>();
     }
 
-    public List <T> select(T field, String condition, T value ) {
-        List <T> selectedEntryList = new ArrayList<>();
-        for (Map.Entry<Integer,T> entry: map.entrySet()){
-                switch (condition)   {
 
-                    case "=" -> entry.getValue().getClass() .getDeclaredField("Name") = value ;
-                    case "!=" -> ;
-                    case ">=" -> ;
-                    case "<=" -> ;
-                    default -> ;
-                }
-            }
-        }
 
-    }
+
 
     public void insert(T entity) {
         currentId++;

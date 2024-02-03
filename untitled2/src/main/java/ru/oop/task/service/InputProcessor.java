@@ -1,7 +1,7 @@
 package ru.oop.task.service;
 
 public class InputProcessor {
-    public  InputProcessor(String consoleInput) {
+    public String[] InputProcessor(String consoleInput) {
         String input = consoleInput.trim();
         if (input == null || input.isEmpty()) {
             System.out.println("Empty command! Type HELP for usage");

@@ -14,9 +14,7 @@ public class User {
         this.secondName = lastName;
         this.age = age;
     }
-public  static String getValueByFieldName (String fieldName){
 
-}
     public String getFirstName() {
         return firstName;
     }

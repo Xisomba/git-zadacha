@@ -56,9 +56,21 @@ public class SelectProcessor {
 
             }
             return String.join("", outputList);
-        } else if (words[1].equalsIgnoreCase("FROM") && words.length == 5 && words[3].equalsIgnoreCase("WHERE")) {
-            if (words[2].equalsIgnoreCase("pets")) {
+        } else if (words[1].equalsIgnoreCase("FROM") && words.length == 5 && words[3].equalsIgnoreCase("WHERE")// добавить проверку на поле
+                && (words[4].contains("=") || words[4].contains("!=") || words[4].contains(">=") || words[4].contains("<="))) {
+            PetRepository repository = new PetRepository();
 
+            if (repository.checkIfFieldExist(words[4]) &&words[2].equalsIgnoreCase("pets")) {                // неверное условие вернуть хуйню
+                outputList.add("""
+                        |id|name|breed|age|
+                        +--+----+-----+---+
+                        """ );
+
+                List<Pet> selectedPets = repository.
+            }
+                else  if (){
+
+                }
             }
         }
     }
