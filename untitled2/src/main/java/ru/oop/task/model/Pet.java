@@ -45,4 +45,25 @@ public class Pet {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public Object getFieldValue(String fieldName) {
+        switch (fieldName) {
+            case "name" -> {
+                return getName();
+            }
+            case "breed" -> {
+                return getBreed();
+            }
+            case "age" -> {
+                return getAge();
+            }
+            case "id" -> {
+                return getId();
+            }
+            default -> {
+                System.out.println("Такого поля не существует");
+                return null;
+            }
+        }
+    }
 }

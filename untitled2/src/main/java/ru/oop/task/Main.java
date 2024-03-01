@@ -15,14 +15,12 @@ public class Main {
         while (true) {
             System.out.print("Enter command: ");
             String command = scanner.nextLine();
-            String[] words = command.split("\\s+");
-            if (ExitProcessor.isCommandExit(words)){
+            String[] words = command.split("\\s+"); // Разделяем строку на слова по пробелам
+            if (ExitProcessor.isCommandExit(words)) {
                 System.out.println("Exiting program...");
                 break;
             }
             consoleHandler.handleCommand(words);
-
-
         }
     }
 }

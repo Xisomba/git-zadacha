@@ -4,18 +4,18 @@ import ru.oop.task.model.Pet;
 import ru.oop.task.model.User;
 import ru.oop.task.repo.PetRepository;
 import ru.oop.task.repo.UserRepository;
+import ru.oop.task.service.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SelectProcessor {
     public static String selectCommand(String[] words) {
-        if ((!words[1].equals("*") && !words[1].equalsIgnoreCase("FROM")
-                || (!words[2].equalsIgnoreCase("FROM") && !words[3].equalsIgnoreCase("WHERE")))) {
+        if (!words[1].equalsIgnoreCase("FROM") || !words[3].equalsIgnoreCase("WHERE")) {
             return """
-                    Неправильно оформлена команда INSERT.
+                    Неправильно оформлена команда SELECT.
                                    
-                    Корректный ввод -> INSERT INTO {Название базы данных} VALUES({Значение}, {Значение}...)
+                    Корректный ввод -> SELECT * FROM {Название таблицы} WHERE {условие}
                                        
                     """;
         } else {
@@ -25,54 +25,46 @@ public class SelectProcessor {
 
     private static String createOutput(String[] words) {
         List<String> outputList = new ArrayList<>();
-        if (words[1].equals("*") && words.length == 4 && words[2].equalsIgnoreCase("FROM")) {
-            if (words[3].equalsIgnoreCase("pets")) {
-                PetRepository repository = new PetRepository();
-                outputList.add("""
-                        |id|name|breed|age|
-                        +--+----+-----+---+\s
-                        """);
-                List<Pet> petList = repository.getAll();
-                for (Pet pet : petList) {
+        if (words[1].equalsIgnoreCase("FROM") && words[3].equalsIgnoreCase("WHERE")
+                && (words[4].contains("=") || words[4].contains("!=") || words[4].contains(">=") || words[4].contains("<="))) {
+            PetRepository petRepository = new PetRepository();
+            UserRepository userRepository = new UserRepository();
 
+            if (petRepository.checkIfFieldExist(words[2])) {
+                List<Pet> selectedPets = petRepository.getFilteredPets(words);
+                if (selectedPets != null && !selectedPets.isEmpty()) {
                     outputList.add("""
-                            |%d|  %s|   %s| %d|
-                            +--+----+-----+---+ \s
-                            """.formatted(pet.getId(), pet.getName(), pet.getBreed(), pet.getAge()));
+                        | id | name | breed | age |
+                        +----+------+------+-----+\s
+                        """);
+                    for (Pet pet : selectedPets) {
+                        outputList.add(String.format("| %d  | %s | %s | %d |\s", pet.getId(), pet.getName(), pet.getBreed(), pet.getAge()));
+                    }
+                } else {
+                    outputList.add("No pets match the specified conditions.");
+                }
+            } else if (userRepository.checkIfFieldExist(words[2])) {
+                List<User> selectedUsers = userRepository.getFilteredUsers(words);
+                if (selectedUsers != null && !selectedUsers.isEmpty()) {
+                    outputList.add("""
+                        | id | first_name | second_name | age | pet_id |
+                        +----+------------+-------------+-----+--------+
+                        """);
+                    for (User user : selectedUsers) {
+                        outputList.add(String.format("| %d  | %s | %s | %d | %s |\s", user.getId(), user.getFirstName(),
+                                user.getSecondName(), user.getAge(), user.getPetId() == null ? "" : user.getPetId()));
+                    }
+                } else {
+                    outputList.add("No users match the specified conditions.");
                 }
             } else {
-                UserRepository repository = new UserRepository();
-                outputList.add("""
-                        |id|first_name|second_name|age|pet_id|
-                        +--+----------+-----------+---+------+
-                        """);
-                List<User> userList = repository.getAll();
-                for (User user : userList) {
-                    outputList.add("""
-                            |%d|        %s|         %s| %d|    %s|
-                            +--+----------+-----------+---+------+  \s
-                            """.formatted(user.getId(), user.getFirstName(), user.getSecondName(), user.getAge(), user.getPetId() == null ? "" : user.getPetId().toString()));
-                }
-
+                outputList.add("Invalid table name or field name.");
             }
-            return String.join("", outputList);
-        } else if (words[1].equalsIgnoreCase("FROM") && words.length == 5 && words[3].equalsIgnoreCase("WHERE")// добавить проверку на поле
-                && (words[4].contains("=") || words[4].contains("!=") || words[4].contains(">=") || words[4].contains("<="))) {
-            PetRepository repository = new PetRepository();
-
-            if (repository.checkIfFieldExist(words[4]) &&words[2].equalsIgnoreCase("pets")) {                // неверное условие вернуть хуйню
-                outputList.add("""
-                        |id|name|breed|age|
-                        +--+----+-----+---+
-                        """ );
-
-                List<Pet> selectedPets = repository.
-            }
-                else  if (){
-
-                }
-            }
+        } else {
+            outputList.add("Incorrect WHERE clause.");
         }
+        return String.join("", outputList);
     }
 }
+
 

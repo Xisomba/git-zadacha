@@ -53,6 +53,29 @@ public class User {
     public void setPetId(Integer petId) {
         this.petId = petId;
     }
-
+    public Object getFieldValue(String fieldName) {
+        switch (fieldName) {
+            case "name" -> {
+                return getFirstName();
+            }
+            case "breed" -> {
+                return getSecondName();
+            }
+            case "age" -> {
+                return getAge();
+            }
+            case "id" -> {
+                return getId();
+            }
+            case  "petId" ->
+            {
+                return getPetId();
+            }
+            default -> {
+                System.out.println("Такого поля не существует");
+                return null;
+            }
+        }
+    }
 }
 

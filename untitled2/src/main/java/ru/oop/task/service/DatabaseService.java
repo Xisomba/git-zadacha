@@ -3,6 +3,7 @@ package ru.oop.task.service;
 import ru.oop.task.model.Database;
 import ru.oop.task.model.Pet;
 import ru.oop.task.model.User;
+import ru.oop.task.repo.UserRepository;
 
 import java.util.HashMap;
 import java.util.Map;

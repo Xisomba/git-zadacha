@@ -10,7 +10,7 @@ public class MainRepository<T> implements BaseRepository<T> {
         this.database = database;
     }
 
-    public void create(T entity) {
+    public void insert(T entity) {
         database.insert(entity);
     }
 
@@ -27,7 +27,7 @@ public class MainRepository<T> implements BaseRepository<T> {
     }
 
     public void delete(Integer id) {
-
+        database.delete(id);
     }
 
     public int getId(T entity){
